@@ -1,0 +1,190 @@
+<style>
+    #list {
+        position: absolute;
+        height: 100%;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        background-color: white;
+        display: none;
+        overflow: auto;
+    }
+
+    #switcher {
+        height: 50px;
+        width: 200px;
+        top: 5px;
+        z-index: 2;
+        display: block;
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+
+    #inner-list {
+        display: block;
+        top: 100px;
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        max-width: 400px;
+    }
+
+    #btn-kort {
+        float: left;
+        -webkit-border-bottom-left-radius: 5px;
+        -webkit-border-top-left-radius: 5px;
+        -moz-border-radius-bottomleft: 5px;
+        -moz-border-radius-topleft: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    #btn-list {
+        float: right;
+        -webkit-border-bottom-right-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-bottomright: 5px;
+        -moz-border-radius-topright: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    #btn-kort, #btn-list {
+        width: 50%;
+        text-align: center;
+        background-color: rgba(224, 241, 251, 0.9);
+
+    }
+    .nav>li {
+        float: left;
+    }
+
+    #switcher .active {
+        background-color: #008ECF;
+        color: white;
+    }
+
+    #btn-list h3, #btn-kort h3 {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 5px;
+        font-size: 14px;
+        font-weight: 700;
+
+    }
+
+    .naturpark-list-item {
+        white-space: nowrap;
+        font-weight: 300;
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+    }
+    .navbar {
+        left: 0;
+    }
+    .leaflet-control-locate {
+        margin-top: 17px;
+        margin-bottom: 17px;
+        box-shadow: none;
+    }
+
+    @media (max-width: 1199px) {
+        .leaflet-control-locate {
+            margin-top: 13px;
+            margin-bottom: 13px;
+        }
+    }
+</style>
+<!-- map -->
+<div id="pane">
+    <div id="container">
+        <div id="switcher">
+            <div id="btn-kort" class="active"><h3>Kort</h3></div>
+            <div id="btn-list"><h3>List</h3></div>
+        </div>
+        <div id="map"></div>
+        <div id="list">
+            <div id="inner-list"></div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="padding:0; margin-right: 20px; position: relative; top: -5px"><img style="width: 60px" src="https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/Marsvin-piktogram.png"></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+
+                <li id="locale-btn">
+
+                </li>
+                <li class="">
+                    <a href="#" data-toggle="modal" data-target="#baselayer-modal"> <i class='fa fa-map'></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- About Modal -->
+<div class="modal fade" id="about-model" tabindex="-1" role="dialog" aria-labelledby="about-modelLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="about-modelLabel">{{About}}</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{Close}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="click-modal" tabindex="-1" role="dialog" aria-labelledby="click-modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="click-modalLabel"></h2>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{Close}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Baselayer Modal -->
+<div class="modal fade" id="baselayer-modal" tabindex="-1" role="dialog" aria-labelledby="baselayer-modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="baselayer-modalLabel">Vælg baggrundskort</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" id="base-layer-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{Close}}</button>
+            </div>
+        </div>
+    </div>
+</div>
