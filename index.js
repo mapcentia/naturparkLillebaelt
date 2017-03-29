@@ -62,8 +62,8 @@ var source1 =
     '</a>' +
     '</div>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="facebook" title="Del på Facebook"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="twitter" title="Del på Twitter"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
 var source2 =
@@ -71,8 +71,8 @@ var source2 =
     '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="facebook" title="Del på Facebook"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="twitter" title="Del på Twitter"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
 var template1 = handlebars.compile(source1);
@@ -236,9 +236,9 @@ function FeatureListDistance(props) {
 function FeatureList(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
-        <div data-naturpark-name={feature.properties.navn} className="naturpark-list-item" key={feature.properties.navn}>
+        <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
             {feature.properties.navn}
-        </div>
+        </button>
     );
     return (
         <div>{listFeatures}</div>
