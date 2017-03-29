@@ -68,7 +68,7 @@ var source1 =
 
 var source2 =
     '<div>{{{text1}}}</div>' +
-    '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>' +
+    '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;color=008ECF&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false"></iframe>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
     '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-facebook"></i></a>' +
