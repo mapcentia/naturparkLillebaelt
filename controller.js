@@ -13,6 +13,9 @@ var backboneEvents;
 
 var naturparkLillebaelt;
 
+var jquery = require('jquery');
+require('snackbarjs');
+
 
 /**
  *
@@ -36,6 +39,12 @@ module.exports = {
             $("#list").fadeIn(200);
             $("#btn-list").addClass("active");
             $("#btn-kort").removeClass("active");
+        });
+
+        $(document).arrive('#btn-marsvin', function () {
+            $(this).on("click", function (e) {
+                jquery.snackbar({id: "snackbar", content: "<span>" + __("Tak, det er registerert, at du hørte et marsvin") + "</span>", htmlAllowed: true, timeout: 2000});
+            });
         });
 
         $(document).arrive('.naturpark-list-item', function () {

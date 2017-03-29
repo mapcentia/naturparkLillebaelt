@@ -35,7 +35,7 @@ var showdown = require('showdown');
 
 var converter = new showdown.Converter();
 
-var source =
+var source1 =
     '<div>{{{text1}}}</div>' +
     '<div id="myCarousel" class="carousel slide" data-ride="carousel">' +
 
@@ -62,11 +62,21 @@ var source =
     '</a>' +
     '</div>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-primary btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="facebook" title="Del på Facebook"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-primary btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="twitter" title="Del på Twitter"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="facebook" title="Del på Facebook"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="twitter" title="Del på Twitter"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
-var template = handlebars.compile(source);
+var source2 =
+    '<div>{{{text1}}}</div>' +
+    '<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>' +
+    '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
+    '<div style="text-align: center" class="bs-component btn-group-sm">' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="facebook" title="Del på Facebook"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-toggle="tooltip" data-placement="top" data-some-site="twitter" title="Del på Twitter"><i class="material-icons fa fa-twitter"></i></a>' +
+    '</div>';
+
+var template1 = handlebars.compile(source1);
+var template2 = handlebars.compile(source2);
 
 /**
  *
@@ -141,7 +151,13 @@ module.exports = module.exports = {
         featuresWithKeys[id].text1 = converter.makeHtml(featuresWithKeys[id].text1);
         featuresWithKeys[id].images = featuresWithKeys[id].images;
 
-        var html = template(featuresWithKeys[id]);
+        if (id === "Marsvinepost") {
+            var html = template2(featuresWithKeys[id]);
+
+        } else {
+            var html = template1(featuresWithKeys[id]);
+
+        }
 
         $("#click-modal").modal({});
         $("#click-modalLabel").html(featuresWithKeys[id].navn);
