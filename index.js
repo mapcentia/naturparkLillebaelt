@@ -237,9 +237,12 @@ module.exports = module.exports = {
 function FeatureListDistance(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
+
             <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
-                <span className="distance">{feature.properties.__distanceStr}</span>{feature.properties.navn}
+                <div className="btn-text">{feature.properties.navn}</div>
+                <div className="distance">{feature.properties.__distanceStr}</div>
             </button>
+
     );
     return (
         <div>
