@@ -41,6 +41,20 @@ module.exports = {
             $("#btn-kort").removeClass("active");
         });
 
+        $("#btn-list-dis").on("click", function (e) {
+            if ($("#btn-list-dis").hasClass("disabled")) {
+                return;
+            }
+            naturparkLillebaelt.renderListWithDistance();
+            $("#btn-list-dis").addClass("active");
+            $("#btn-list-alpha").removeClass("active");
+        });
+        $("#btn-list-alpha").on("click", function (e) {
+            naturparkLillebaelt.renderListWithoutDistance();
+            $("#btn-list-alpha").addClass("active");
+            $("#btn-list-dis").removeClass("active");
+        });
+
         $(document).arrive('#btn-marsvin', function () {
             $(this).on("click", function (e) {
                 jquery.snackbar({id: "snackbar", content: "<span>" + __("Tak, det er registerert, at du hørte et marsvin") + "</span>", htmlAllowed: true, timeout: 2000});

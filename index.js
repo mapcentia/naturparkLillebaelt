@@ -35,6 +35,8 @@ var showdown = require('showdown');
 
 var converter = new showdown.Converter();
 
+var position;
+
 var source1 =
     '<div>{{{text1}}}</div>' +
     '<div id="myCarousel" class="carousel slide" data-ride="carousel">' +
@@ -89,7 +91,7 @@ module.exports = module.exports = {
         return this;
     },
     init: function () {
-        var me = this;
+        var parent = this;
         $("#locale-btn").append($(".leaflet-control-locate"));
         backboneEvents.get().on("ready:meta", function () {
             storePoi = new geocloud.sqlStore({
@@ -110,16 +112,23 @@ module.exports = module.exports = {
                     });
                     if ("geolocation" in navigator) {
                         navigator.geolocation.watchPosition(
-                            function (position) {
-                                renderListWithDistance(position);
+                            function (p) {
+                                position = p;
+                                $("#btn-list-dis").removeClass("disabled");
+                                if ($("#btn-list-dis").hasClass("active")) {
+                                    parent.renderListWithDistance();
+                                }
                             },
 
                             function () {
-                                renderListWithoutDistance();
+                                parent.renderListWithoutDistance();
+                                $("#btn-list-alpha").addClass("active");
+                                $("#btn-list-dis").removeClass("active");
+                                $("#btn-list-dis").addClass("disabled");
                             }
                         );
                     } else {
-                        renderListWithoutDistance();
+                        parent.renderListWithoutDistance();
                     }
                 },
 
@@ -162,74 +171,80 @@ module.exports = module.exports = {
         $("#click-modal").modal({});
         $("#click-modalLabel").html(featuresWithKeys[id].navn);
         $("#click-modal .modal-body").html(html);
-    }
+    },
+
+    renderListWithDistance: function () {
+        var d, i;
+
+        if (!position) {
+            return;
+        }
+
+        var getDistanceFromLatLonInKm = function (lat1, lon1, lat2, lon2) {
+            var R = 6371000; // Radius of the earth in km
+            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+            var dLon = deg2rad(lon2 - lon1);
+            var a =
+                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                ;
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c; // Distance in km
+            return d;
+        };
+
+        var deg2rad = function (deg) {
+            return deg * (Math.PI / 180)
+        };
+
+        for (i = 0; i < features.length; i++) {
+            d = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, features[i].geometry.coordinates[1], features[i].geometry.coordinates[0]);
+            features[i].properties.__distanceNum = d;
+            features[i].properties.__distanceStr = prettyUnits(d) + 'm'
+        }
+        features.sort(function (a, b) {
+            var keyA = a.properties.__distanceNum,
+                keyB = b.properties.__distanceNum;
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return 1;
+            return 0;
+        });
+        try {
+            ReactDOM.render(
+                <FeatureListDistance features={features}/>,
+                document.getElementById("inner-list")
+            );
+        } catch (e) {
+
+        }
+    },
+
+    renderListWithoutDistance: function () {
+        try {
+            ReactDOM.render(
+                <FeatureList features={features}/>,
+                document.getElementById("inner-list")
+            );
+        } catch (e) {
+
+        }
+
+    },
 };
 
-var renderListWithoutDistance = function () {
-    try {
-        ReactDOM.render(
-            <FeatureList features={features}/>,
-            document.getElementById("inner-list")
-        );
-    } catch (e) {
-
-    }
-
-};
-
-
-var renderListWithDistance = function (position) {
-    var d, i;
-    var getDistanceFromLatLonInKm = function (lat1, lon1, lat2, lon2) {
-        var R = 6371000; // Radius of the earth in km
-        var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-        var dLon = deg2rad(lon2 - lon1);
-        var a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var d = R * c; // Distance in km
-        return d;
-    };
-
-    var deg2rad = function (deg) {
-        return deg * (Math.PI / 180)
-    };
-
-    for (i = 0; i < features.length; i++) {
-        d = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, features[i].geometry.coordinates[1], features[i].geometry.coordinates[0]);
-        features[i].properties.__distanceNum = d;
-        features[i].properties.__distanceStr = prettyUnits(d) + 'm'
-    }
-    features.sort(function (a, b) {
-        var keyA = a.properties.__distanceNum,
-            keyB = b.properties.__distanceNum;
-        if (keyA < keyB) return -1;
-        if (keyA > keyB) return 1;
-        return 0;
-    });
-    try {
-        ReactDOM.render(
-            <FeatureListDistance features={features}/>,
-            document.getElementById("inner-list")
-        );
-    } catch (e) {
-
-    }
-
-};
 
 function FeatureListDistance(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
-        <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
-            {feature.properties.navn} {feature.properties.__distanceStr}
-        </button>
+            <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
+                <span className="distance">{feature.properties.__distanceStr}</span>{feature.properties.navn}
+            </button>
     );
     return (
-        <div>{listFeatures}</div>
+        <div>
+            {listFeatures}
+        </div>
     );
 }
 
