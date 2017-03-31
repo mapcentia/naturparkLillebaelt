@@ -135,7 +135,7 @@ module.exports = module.exports = {
                 // Bind a popup to each point
                 onEachFeature: function (feature, layer) {
                     layer.on("click", function () {
-                        me.createInfoContent(feature.properties.navn);
+                        parent.createInfoContent(feature.properties.navn);
                     });
                 },
                 // Make Awesome Markers instead of simple vector point features
