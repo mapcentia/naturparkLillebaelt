@@ -176,7 +176,7 @@ module.exports = module.exports = {
         featuresWithKeys[id].text1 = converter.makeHtml(featuresWithKeys[id].text1);
         featuresWithKeys[id].images = featuresWithKeys[id].images;
 
-        if (id === 1) {
+        if (id + "" === "1") {
             var html = template2(featuresWithKeys[id]);
 
         } else {
