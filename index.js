@@ -26,8 +26,8 @@ var ReactDOM = require('react-dom');
 var prettyUnits = require("pretty-units");
 
 var features = [];
-var featuresWithKeys = {};
 
+var featuresWithKeys = {};
 
 var handlebars = require('handlebars');
 
@@ -36,6 +36,9 @@ var showdown = require('showdown');
 var converter = new showdown.Converter();
 
 var position;
+
+var urlparser = require('./../../../modules/urlparser');
+var urlVars = urlparser.urlVars;
 
 var source1 =
     '<div>{{{text1}}}</div>' +
@@ -64,20 +67,21 @@ var source1 =
     '</a>' +
     '</div>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
 var source2 =
     '<div>{{{text1}}}</div>' +
-    '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;color=008ECF&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false"></iframe>' +
+    '<iframe width="560" height="315" src="https://www.youtube.com/embed/cuuV7Ef1INY" frameborder="0" allowfullscreen></iframe>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
 var template1 = handlebars.compile(source1);
+
 var template2 = handlebars.compile(source2);
 
 /**
@@ -108,10 +112,11 @@ module.exports = module.exports = {
                     var me = this;
                     features = me.geoJSON.features;
                     $.each(features, function (i, v) {
-                        featuresWithKeys[v.properties.navn] = v.properties;
+                        featuresWithKeys[v.properties.id] = v.properties;
                     });
                     if ("geolocation" in navigator) {
                         navigator.geolocation.watchPosition(
+
                             function (p) {
                                 position = p;
                                 $("#btn-list-dis").removeClass("disabled");
@@ -130,12 +135,23 @@ module.exports = module.exports = {
                     } else {
                         parent.renderListWithoutDistance();
                     }
+
+                    // Open POI if any
+                    if (urlVars.poi!== undefined) {
+
+                        var parr = urlVars.poi.split("#");
+                        if (parr.length > 1) {
+                            parr.pop();
+                        }
+
+                        parent.createInfoContent(parr.join());
+                    }
                 },
 
                 // Bind a popup to each point
                 onEachFeature: function (feature, layer) {
                     layer.on("click", function () {
-                        parent.createInfoContent(feature.properties.navn);
+                        parent.createInfoContent(feature.properties.id);
                     });
                 },
                 // Make Awesome Markers instead of simple vector point features
@@ -160,7 +176,7 @@ module.exports = module.exports = {
         featuresWithKeys[id].text1 = converter.makeHtml(featuresWithKeys[id].text1);
         featuresWithKeys[id].images = featuresWithKeys[id].images;
 
-        if (id === "Marsvinepost") {
+        if (id === 1) {
             var html = template2(featuresWithKeys[id]);
 
         } else {
@@ -221,6 +237,10 @@ module.exports = module.exports = {
     },
 
     renderListWithoutDistance: function () {
+        features.sort(function(a,b){
+            var alc = a.properties.navn.toLowerCase(), blc = b.properties.navn.toLowerCase();
+            return alc > blc ? 1 : alc < blc ? -1 : 0;
+        });
         try {
             ReactDOM.render(
                 <FeatureList features={features}/>,
@@ -238,7 +258,7 @@ function FeatureListDistance(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
 
-            <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
+            <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
                 <div className="btn-text">{feature.properties.navn}</div>
                 <div className="distance">{feature.properties.__distanceStr}</div>
             </button>
@@ -254,7 +274,7 @@ function FeatureListDistance(props) {
 function FeatureList(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
-        <button data-naturpark-name={feature.properties.navn} className="naturpark-list-item btn btn-default" key={feature.properties.navn}>
+        <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
             {feature.properties.navn}
         </button>
     );
