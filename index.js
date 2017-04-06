@@ -73,7 +73,9 @@ var source1 =
 
 var source2 =
     '<div>{{{text1}}}</div>' +
-    '<iframe width="560" height="315" src="https://www.youtube.com/embed/cuuV7Ef1INY" frameborder="0" allowfullscreen></iframe>' +
+    '<div class="embed-responsive embed-responsive-16by9">' +
+    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cuuV7Ef1INY" allowfullscreen></iframe>' +
+    '</div>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
     '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
@@ -116,7 +118,6 @@ module.exports = module.exports = {
                     });
                     if ("geolocation" in navigator) {
                         navigator.geolocation.watchPosition(
-
                             function (p) {
                                 position = p;
                                 $("#btn-list-dis").removeClass("disabled");
@@ -137,7 +138,7 @@ module.exports = module.exports = {
                     }
 
                     // Open POI if any
-                    if (urlVars.poi!== undefined) {
+                    if (urlVars.poi !== undefined) {
 
                         var parr = urlVars.poi.split("#");
                         if (parr.length > 1) {
@@ -237,7 +238,7 @@ module.exports = module.exports = {
     },
 
     renderListWithoutDistance: function () {
-        features.sort(function(a,b){
+        features.sort(function (a, b) {
             var alc = a.properties.navn.toLowerCase(), blc = b.properties.navn.toLowerCase();
             return alc > blc ? 1 : alc < blc ? -1 : 0;
         });
@@ -258,11 +259,10 @@ function FeatureListDistance(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
 
-            <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
-                <div className="btn-text">{feature.properties.navn}</div>
-                <div className="distance">{feature.properties.__distanceStr}</div>
-            </button>
-
+        <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
+            <div className="btn-text">{feature.properties.navn}</div>
+            <div className="distance">{feature.properties.__distanceStr}</div>
+        </button>
     );
     return (
         <div>
