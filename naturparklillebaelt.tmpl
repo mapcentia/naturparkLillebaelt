@@ -43,6 +43,12 @@
         overflow: auto;
     }
 
+    #inner-list img {
+        width: 40px;
+        float: left;
+        margin-right: 15px;
+    }
+
     #btn-kort, #btn-list-dis {
         float: left;
         -webkit-border-bottom-left-radius: 5px;
@@ -125,9 +131,10 @@
     .naturpark-list-item {
         font-weight: 300;
         cursor: pointer;
-        text-align: center;
+        text-align: left;
         width: 100%;
         margin: 2px 0 0 0;
+        background-color: rgba(248, 248, 248, 1);
     }
 
     .naturpark-list-item div {
@@ -162,6 +169,19 @@
 
     .btn-text {
         margin-bottom: 7px;
+    }
+
+    .btn-text-dis {
+        margin-top: 7px;
+    }
+
+    .btn-text-alpha {
+        margin-top: 12px;
+    }
+
+    .carousel-caption {
+        padding: 0;
+        bottom: -7px;
     }
 
     @media (max-width: 1199px) {

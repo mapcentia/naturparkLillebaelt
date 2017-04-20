@@ -52,7 +52,12 @@ var source1 =
 
     '<div class="carousel-inner" role="listbox">' +
     '{{#images}}' +
-    '<div class="item {{#if @first}}active{{/if}}"><img style="width: 100%" src="{{.}}" alt="Chania"></div>' +
+    '<div class="item {{#if @first}}active{{/if}}">' +
+    '<img style="width: 100%" src="{{[0]}}" alt="">' +
+    '<div class="carousel-caption">' +
+    '<p>{{[1]}}</p>' +
+    '</div>' +
+    '</div>' +
     '{{/images}}' +
     '</div>' +
 
@@ -65,18 +70,16 @@ var source1 =
     '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>' +
     '<span class="sr-only">Next</span>' +
     '</a>' +
-    '</div>' +
-    '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fa fa-twitter"></i></a>' +
     '</div>';
 
 var source2 =
     '<div>{{{text1}}}</div>' +
     '<div class="embed-responsive embed-responsive-16by9">' +
-    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cuuV7Ef1INY" allowfullscreen></iframe>' +
+    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zeHW-QIXcQc" allowfullscreen></iframe>' +
     '</div>' +
-    '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
+    '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>';
+
+var sourceShare =
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
     '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
     '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fa fa-twitter"></i></a>' +
@@ -85,6 +88,17 @@ var source2 =
 var template1 = handlebars.compile(source1);
 
 var template2 = handlebars.compile(source2);
+
+var templateShare = handlebars.compile(sourceShare);
+
+
+var icon = L.icon({
+    iconUrl: 'https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/leaflet-icons/Krone-piktogram.png',
+
+    iconSize: [40, 40], // size of the icon
+    iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
 
 /**
  *
@@ -158,13 +172,12 @@ module.exports = module.exports = {
                 // Make Awesome Markers instead of simple vector point features
                 pointToLayer: function (feature, latlng) {
                     return L.marker(latlng, {
-                        icon: L.AwesomeMarkers.icon({
-                                icon: 'circle-o',
-                                markerColor: '#00578A',
-                                prefix: 'fa'
-                            }
-                        )
-                    });
+                        icon: L.icon({
+                            iconUrl: 'https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/leaflet-icons/' + feature.properties.icon,
+                            iconSize: [50, 50], // size of the icon
+                            iconAnchor: [25, 25] // point of the icon which will correspond to marker's location
+                        })
+                    })
                 }
             });
             storePoi.load();
@@ -185,9 +198,12 @@ module.exports = module.exports = {
 
         }
 
+        var htmlShare = templateShare(featuresWithKeys[id]);
+
+
         $("#click-modal").modal({});
         $("#click-modalLabel").html(featuresWithKeys[id].navn);
-        $("#click-modal .modal-body").html(html);
+        $("#click-modal .modal-body").html(html + htmlShare);
     },
 
     renderListWithDistance: function () {
@@ -260,7 +276,8 @@ function FeatureListDistance(props) {
     const listFeatures = features.map((feature) =>
 
         <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
-            <div className="btn-text">{feature.properties.navn}</div>
+            <img className="" src={"https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/piktogrammer/" + feature.properties.icon}/>
+            <div className="btn-text btn-text-dis">{feature.properties.navn}</div>
             <div className="distance">{feature.properties.__distanceStr}</div>
         </button>
     );
@@ -275,7 +292,8 @@ function FeatureList(props) {
     const features = props.features;
     const listFeatures = features.map((feature) =>
         <button data-naturpark-id={feature.properties.id} className="naturpark-list-item btn btn-default" key={feature.properties.id}>
-            {feature.properties.navn}
+            <img className="" src={"https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/piktogrammer/" + feature.properties.icon}/>
+            <div className="btn-text btn-text-alpha">{feature.properties.navn}</div>
         </button>
     );
     return (
