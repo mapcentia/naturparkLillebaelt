@@ -53,7 +53,7 @@ var source1 =
     '<div class="carousel-inner" role="listbox">' +
     '{{#images}}' +
     '<div class="item {{#if @first}}active{{/if}}">' +
-    '<img style="width: 100%" src="{{[0]}}" alt="">' +
+    '<img style="width: 100%" src="https://s3-eu-west-1.amazonaws.com/mapcentia-www/naturpark_lillebaelt/images/{{[0]}}" alt="">' +
     '<div class="carousel-caption">' +
     '<p>{{[1]}}</p>' +
     '</div>' +
@@ -70,14 +70,22 @@ var source1 =
     '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>' +
     '<span class="sr-only">Next</span>' +
     '</a>' +
-    '</div>';
+    '</div>' +
+
+    '{{#if video}}' +
+    '<div class="embed-responsive embed-responsive-16by9">' +
+    '<iframe class="embed-responsive-item" src="{{video}}" allowfullscreen></iframe>' +
+    '</div>' +
+    '{{/if}}';
 
 var source2 =
     '<div>{{{text1}}}</div>' +
     '<div class="embed-responsive embed-responsive-16by9">' +
     '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zeHW-QIXcQc" allowfullscreen></iframe>' +
     '</div>' +
-    '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>';
+    '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
+    '<div style="margin-top: 25px; margin-bottom: 15px">Hvad skal jeg lytte efter? Tryk og hør marsvinets lyde.</div>' +
+    '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false"></iframe>';
 
 var sourceShare =
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
@@ -123,6 +131,22 @@ module.exports = module.exports = {
                 clickable: true,
                 lifetime: 0,
                 sql: "SELECT * FROM public.marsvin_app_ok",
+                styleMap: function (feature) {
+                    return {
+                        weight: (function (d) {
+                            return d === 12 ? 4 :
+                                d === 14 ? 2 :
+                                    '#FFEDA0';
+                        }(feature.properties.id)),
+                        opacity: 1,
+                        //dashArray: '3',
+                        color: (function (d) {
+                            return d === 12 ? '#008ECF' :
+                                d === 14 ? '#BD0026' :
+                                    '#FFEDA0';
+                        }(feature.properties.id))
+                    }
+                },
 
                 onLoad: function () {
                     var me = this;
@@ -232,9 +256,17 @@ module.exports = module.exports = {
         };
 
         for (i = 0; i < features.length; i++) {
-            d = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, features[i].geometry.coordinates[1], features[i].geometry.coordinates[0]);
-            features[i].properties.__distanceNum = d;
-            features[i].properties.__distanceStr = prettyUnits(d) + 'm'
+
+            if (features[i].geometry.type !== "Point") {
+                features[i].properties.__distanceNum = 1000000000;
+                features[i].properties.__distanceStr = '-';
+
+            } else {
+
+                d = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, features[i].geometry.coordinates[1], features[i].geometry.coordinates[0]);
+                features[i].properties.__distanceNum = d;
+                features[i].properties.__distanceStr = prettyUnits(d) + 'm'
+            }
         }
         features.sort(function (a, b) {
             var keyA = a.properties.__distanceNum,
