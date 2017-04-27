@@ -81,7 +81,7 @@ var source1 =
 var source2 =
     '<div>{{{text1}}}</div>' +
     '<div class="embed-responsive embed-responsive-16by9">' +
-    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' + window.extensionConfig.naturparklillebaelt.youtubeId + '" allowfullscreen></iframe>' +
+    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' + window.vidiConfig.extensionConfig.naturparklillebaelt.youtubeId + '" allowfullscreen></iframe>' +
     '</div>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="margin-top: 25px; margin-bottom: 15px">Hvad skal jeg lytte efter? Tryk og hør marsvinets lyde.</div>' +
