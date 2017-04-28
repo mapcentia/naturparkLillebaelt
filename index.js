@@ -134,11 +134,11 @@ module.exports = module.exports = {
                 styleMap: function (feature) {
                     return {
                         weight: (function (d) {
-                            return d === 12 ? 4 :
-                                d === 14 ? 2 :
+                            return d === 12 ? 7 :
+                                d === 14 ? 7 :
                                     '#FFEDA0';
                         }(feature.properties.id)),
-                        opacity: 1,
+                        opacity: 0.5,
                         //dashArray: '3',
                         color: (function (d) {
                             return d === 12 ? '#008ECF' :
