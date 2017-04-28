@@ -80,7 +80,7 @@ var source1 =
 
 var source2 =
     '<div class="embed-responsive embed-responsive-16by9">' +
-    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' + window.vidiConfig.extensionConfig.naturparklillebaelt.youtubeId + '?rel=0"></iframe>' +
+    '<iframe class="embed-responsive-item" src="https://gaming.youtube.com/embed/live_stream?channel=' + window.vidiConfig.extensionConfig.naturparklillebaelt.youtubeId + '&rel=0"></iframe>' +
     '</div>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="margin-top: 25px; margin-bottom: 15px">Hvad skal jeg lytte efter? Tryk og hør marsvinets lyde.</div>' +

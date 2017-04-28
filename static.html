@@ -52,7 +52,7 @@
         </ul>
 
 
-        <iframe id="video" height="500" style="width: 100%" src="https://www.youtube.com/embed/j44COkxFT7Y?rel=0" frameborder="0"></iframe>
+        <iframe id="video" height="500" style="width: 100%" src="" frameborder="0"></iframe>
 
         <button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>
         <div style="margin-top: 25px; margin-bottom: 15px">Hvad skal jeg lytte efter? Tryk og hør marsvinets lyde.</div>
@@ -120,7 +120,7 @@
             curId = data.extensionConfig.naturparklillebaelt.youtubeId;
 
             if (curId !== oldId) {
-                $("#video").attr("src", "https://www.youtube.com/embed/" + curId);
+                $("#video").attr("src", "https://gaming.youtube.com/embed/live_stream?channel=" + curId + "&rel=0&modestbranding=1&fs=0&autohide=1&showinfo=0&wmode=transparent");
                 oldId = curId;
             } else {
                 console.log("Id ikke skiftet");
