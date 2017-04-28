@@ -79,13 +79,13 @@ var source1 =
     '{{/if}}';
 
 var source2 =
-    '<div>{{{text1}}}</div>' +
     '<div class="embed-responsive embed-responsive-16by9">' +
-    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' + window.vidiConfig.extensionConfig.naturparklillebaelt.youtubeId + '" allowfullscreen></iframe>' +
+    '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' + window.vidiConfig.extensionConfig.naturparklillebaelt.youtubeId + '?rel=0"></iframe>' +
     '</div>' +
     '<button id="btn-marsvin" class="btn btn-raised btn-danger" style="width: 100%">Jeg hørte et marsvin!</button>' +
     '<div style="margin-top: 25px; margin-bottom: 15px">Hvad skal jeg lytte efter? Tryk og hør marsvinets lyde.</div>' +
-    '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false"></iframe>';
+    '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/315009032&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false"></iframe>' +
+    '<div style="margin-top: 30px">{{{text1}}}</div>';
 
 var sourceShare =
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
