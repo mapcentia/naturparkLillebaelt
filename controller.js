@@ -58,6 +58,9 @@ module.exports = {
         $(document).arrive('#btn-marsvin', function () {
             $(this).on("click", function (e) {
                 jquery.snackbar({id: "snackbar", content: "<span>" + __("Tak, det er registerert, at du hørte et marsvin") + "</span>", htmlAllowed: true, timeout: 2000});
+                $.get( "https://marsvin.naturparklillebaelt.dk/tmp/ping_marsvin", function() {
+
+                })
             });
         });
 
