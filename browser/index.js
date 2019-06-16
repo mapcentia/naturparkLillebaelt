@@ -1,3 +1,9 @@
+/*
+ * @author     Martin Høgh <mh@mapcentia.com>
+ * @copyright  2013-2018 MapCentia ApS
+ * @license    http://www.gnu.org/licenses/#AGPL  GNU AFFERO GENERAL PUBLIC LICENSE 3
+ */
+
 /**
  * @fileoverview Description of file, its uses and information
  * about its dependencies.
@@ -37,7 +43,7 @@ var converter = new showdown.Converter();
 
 var position;
 
-var urlparser = require('./../../../modules/urlparser');
+var urlparser = require('./../../../browser/modules/urlparser');
 var urlVars = urlparser.urlVars;
 
 var source1 =
