@@ -95,8 +95,8 @@ var source2 =
 
 var sourceShare =
     '<div style="text-align: center" class="bs-component btn-group-sm">' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fa fa-facebook"></i></a>' +
-    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fa fa-twitter"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="facebook" data-poi-id="{{id}}"><i class="material-icons fab fa-facebook"></i></a>' +
+    '<a href="javascript:void(0)" class="btn btn-default btn-fab btn-share" data-some-site="twitter" data-poi-id="{{id}}"><i class="material-icons fab fa-twitter"></i></a>' +
     '</div>';
 
 var template1 = handlebars.compile(source1);
